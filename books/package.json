@@ -1,0 +1,17 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "",
+  "main": "books.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node books.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
