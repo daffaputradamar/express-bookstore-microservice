@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const axios = require("axios");
 
 require("./config/db");
@@ -17,18 +16,18 @@ app.get("/orders", (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.get("/order/:id", (req, res) => {
+app.get("/orders/:id", (req, res) => {
   Order.findById(req.params.id)
     .then(order => {
       axios
-        .get("http://localhost:5555/customer/" + order.custId)
+        .get("http://localhost:5555/customers/" + order.custId)
         .then(response => {
           let orderObject = {
             custName: response.data.name,
             bookTitle: ""
           };
           axios
-            .get("http://localhost:4545/book/" + order.bookId)
+            .get("http://localhost:4545/books/" + order.bookId)
             .then(response => {
               orderObject.bookTitle = response.data.title;
               res.json(orderObject);
@@ -40,29 +39,18 @@ app.get("/order/:id", (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.post("/order", (req, res) => {
-  const newOrder = {
-    custId: mongoose.Types.ObjectId(req.body.custId),
-    bookId: mongoose.Types.ObjectId(req.body.bookId),
-    initDate: req.body.initDate,
-    deliverDate: req.body.deliverDate
-  };
-
-  Order.create(newOrder)
-    .then(order => console.log(order))
+app.post("/orders", (req, res) => {
+  Order.create({...req.body})
+    .then(order => res.json(order))
     .catch(err => console.log(err));
-
-  res.send("Testing our order route");
 });
 
-app.delete("/order/:id", (req, res) => {
-  Order.findByIdAndRemove(req.params.id)
-    .then(order => console.log(order))
+app.delete("/orders/:id", (req, res) => {
+  Order.findByIdAndDelete(req.params.id)
+    .then(order => res.sendStatus(204))
     .catch(err => console.log(err));
-
-  res.send("Testing our delete route");
 });
 
 app.listen(7777, () =>
-  console.log("Server app and running == This is Order Service")
+  console.log("Order Service is Running on 7777")
 );

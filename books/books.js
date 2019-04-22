@@ -19,47 +19,35 @@ app.get("/books", (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.get("/book/:id", (req, res) => {
+app.get("/books/:id", (req, res) => {
   Book.findById(req.params.id)
     .then(book => res.json(book))
     .catch(err => console.log(err));
 });
 
-app.post("/book", (req, res) => {
-  console.log(req.body);
-
-  const newBook = {
-    title: req.body.title,
-    author: req.body.author,
-    numberPages: req.body.numberPages,
-    publisher: req.body.publisher
-  };
-
-  Book.create(newBook)
-    .then(book => console.log(book))
+app.post("/books", (req, res) => {
+  
+  Book.create(req.body)
+    .then(book => res.json(book))
     .catch(err => console.log(err));
-
-  res.send("Testing our book route");
 });
 
-app.put("/book/:id", (req, res) => {
-  Book.findById(req.params.id).then(book => {
-    book
-      .update(req.body, { fields: Object.keys(req.body) })
-      .then(updatedUser => console.log(updatedUser));
-  });
+app.put("/books/:id", (req, res) => {
+  Book.findOneAndUpdate(
+    {_id: req.params.id},
+    {$set: req.body},
+    {new: true}
+  )
+    .then(user => res.json(user))
+    .catch(err => console.log(err))
+})
 
-  res.send("Testing our update route");
-});
-
-app.delete("/book/:id", (req, res) => {
-  Book.findByIdAndRemove(req.params.id)
-    .then(book => console.log(book))
-    .catch(err => console.log(err));
-
-  res.send("Testing our delete route");
+app.delete("/books/:id", (req, res) => {
+  Book.findByIdAndDelete(req.params.id)
+    .then(res.sendStatus(204))
+    .catch(err => console.log(err))
 });
 
 app.listen(4545, () =>
-  console.log("Server app and running == This is Books Service")
+  console.log("Books Service is Running on 4545")
 );

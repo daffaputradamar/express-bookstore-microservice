@@ -10,12 +10,13 @@ const orderSchema = new Schema({
     type: mongoose.SchemaTypes.ObjectId,
     required: true
   },
-  initDate: {
-    type: Date,
+  sum: {
+    type: Number,
     required: true
   },
-  deliverDate: {
+  initDate: {
     type: Date,
+    default: Date.now(),
     required: true
   }
 });
