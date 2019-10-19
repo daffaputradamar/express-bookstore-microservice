@@ -1,5 +1,7 @@
 # Simple Microservice Backend
 
-run `npm install` and then `npm start` on every directory to start all the servers.
+run `npm install`
+go to directory /EXPRESS-BOOKSTORE-MICROSERVICE
+and then `npm start` to start all the servers.
 
-You can check the REST API using Postman.
+You can check the REST API using Postman, insomnia or other rest client app.
